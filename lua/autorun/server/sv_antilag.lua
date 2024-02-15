@@ -47,11 +47,37 @@ simple_antilag[7] = {
 	['timescale'] = 0.001
 }
 
+local simple_antilag_changes = 0
+timer.Create("simple_antilag_checks",10,0,function()
+	simple_antilag_changes = 0
+end)
 
 hook.Add("Think", "esrv_simpleantilag", function ()
 	--if physenv.GetLastSimulationTime() * 1000 > 25 then
 		--Entity(1):PrintMessage(4,physenv.GetLastSimulationTime()*1000)
 	--end
+
+	if simple_antilag_changes > 12 and not (simple_antilag_changes == -1) then
+
+		if simple_antilag_debug_messages then
+			local ply = player.GetAll()
+			for i=1,#ply do
+				ply[i]:PrintMessage(3,"Возможно, сервер лагает, все пропы заморожены")
+			end
+		end
+
+		for _, ent in pairs(ents.GetAll()) do
+			local phys = ent:GetPhysicsObject()
+			if IsValid(phys) then
+				phys:EnableMotion(false)
+				phys:Sleep()
+			end
+		end
+		simple_antilag_changes = -1
+
+	end
+
+
 
 	local new_time = nil
 	local var_simulation = 0
@@ -86,10 +112,10 @@ hook.Add("Think", "esrv_simpleantilag", function ()
 		game.SetTimeScale( new_time )
 		if new_time < 0.15 then
 			timer.Simple(1,function()
-				game.SetTimeScale( simple_antilag[var_key-1] )
+				game.SetTimeScale( simple_antilag[var_key-1]['timescale'] )
 			end)
 		end
-
+		simple_antilag_changes = simple_antilag_changes + 1
 
 
 		if simple_antilag_debug_messages == true then
@@ -129,7 +155,7 @@ end)
 
 hook.Add( "ShouldCollide", "esrv_simpleantilag", function( ent1, ent2 )
 
-	if simple_antilag_should_collide > 50 then 
+	if simple_antilag_should_collide > 60 then 
 		return false
 	end
 
