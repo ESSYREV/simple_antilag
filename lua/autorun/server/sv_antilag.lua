@@ -110,11 +110,6 @@ hook.Add("Think", "esrv_simpleantilag", function ()
 		simple_antilag_change = curtime + 1 - (var_key/50)
 		simple_antilag_last = new_time
 		game.SetTimeScale( new_time )
-		if new_time < 0.15 then
-			timer.Simple(1,function()
-				game.SetTimeScale( simple_antilag[var_key-1]['timescale'] )
-			end)
-		end
 		simple_antilag_changes = simple_antilag_changes + 1
 
 
