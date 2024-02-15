@@ -84,7 +84,7 @@ hook.Add("Think", "esrv_simpleantilag", function ()
 	local var_key = 0
 	local lst = physenv.GetLastSimulationTime() * 1000
 
-	if not (lst > 7) then return end
+	--if not (lst > 7) then return end
 	simple_antilag_should_collide = lst
 
 
@@ -116,7 +116,7 @@ hook.Add("Think", "esrv_simpleantilag", function ()
 		if simple_antilag_debug_messages == true then
 
 			local str = ""
-			if var_simulation >= 60 or (simple_antilag_change_time < CurTime() and not (simple_antilag_change_time == 0) )  then
+			if lst >= 37 or (simple_antilag_change_time < CurTime() and not (simple_antilag_change_time == 0) )  then
 
 				for _, ent in pairs(ents.GetAll()) do
 					local phys = ent:GetPhysicsObject()
