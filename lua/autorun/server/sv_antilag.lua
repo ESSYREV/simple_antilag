@@ -58,6 +58,9 @@ hook.Add("Think", "esrv_simpleantilag", function ()
 	local var_key = 0
 	local lst = physenv.GetLastSimulationTime() * 1000
 	simple_antilag_should_collide = lst
+
+	if not (lst > 7) then return end
+
 	for key, tbl in pairs(simple_antilag) do
 		if lst > tbl['simulation'] then
 			new_time = tbl['timescale']
