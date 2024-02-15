@@ -109,6 +109,7 @@ hook.Add("Think", "esrv_simpleantilag", function ()
 			end
 		end
 
+		return 
 
 	end
 
