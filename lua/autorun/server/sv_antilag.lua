@@ -92,7 +92,7 @@ hook.Add("Think", "esrv_simpleantilag", function ()
 
 	if lst > 150 then
 
-		print("Вертоянт, вам необходимо изменить переменную is_server_dead, ведь на данный момент сервер выдает "..totsring(lst)..", у вас же указано "..tostring(is_server_dead))
+		print("Вертоянт, вам необходимо изменить переменную is_server_dead, ведь на данный момент сервер выдает "..tostring(lst)..", у вас же указано "..tostring(is_server_dead))
 
 	end
 
@@ -100,7 +100,7 @@ hook.Add("Think", "esrv_simpleantilag", function ()
 
 		local ply = player.GetAll()
 		for i=1,#ply do
-			ply[i]:PrintMessage(3,"Вероятно, сервер находится на грани жизни смерти.")
+			ply[i]:PrintMessage(3,"Вероятно, сервер находится на грани жизни и смерти. Приняты крайние меры.")
 		end
 
 		for _, ent in pairs(ents.GetAll()) do
