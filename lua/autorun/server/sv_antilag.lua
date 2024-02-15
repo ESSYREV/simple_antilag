@@ -1,3 +1,5 @@
+game.SetTimeScale( 1 )
+
 local simple_antilag_change_time = 0
 local simple_antilag_change = 0 -- Сможет ли антилаг менять время (задержка для изменений)
 local simple_antilag_last   = 1
@@ -6,6 +8,9 @@ local simple_antilag = {}
 local simple_antilag_should_collide = 0
 
 local simple_antilag_debug_messages = false
+
+local is_server_dead = 400 -- На случай если серверу станет максимально плохо и он больше не захочет дышать. 
+
 
 simple_antilag[0] = {
 	['simulation'] = 0,
@@ -54,6 +59,7 @@ end)
 
 hook.Add("Think", "esrv_simpleantilag", function ()
 	--if physenv.GetLastSimulationTime() * 1000 > 25 then
+		--print(physenv.GetLastSimulationTime()*1000)
 		--Entity(1):PrintMessage(4,physenv.GetLastSimulationTime()*1000)
 	--end
 
@@ -83,6 +89,28 @@ hook.Add("Think", "esrv_simpleantilag", function ()
 	local var_simulation = 0
 	local var_key = 0
 	local lst = physenv.GetLastSimulationTime() * 1000
+
+	if lst > 150 then
+
+		print("Вертоянт, вам необходимо изменить переменную is_server_dead, ведь на данный момент сервер выдает "..totsring(lst)..", у вас же указано "..tostring(is_server_dead))
+
+	end
+
+	if lst > is_server_dead then
+
+		local ply = player.GetAll()
+		for i=1,#ply do
+			ply[i]:PrintMessage(3,"Вероятно, сервер находится на грани жизни смерти.")
+		end
+
+		for _, ent in pairs(ents.GetAll()) do
+			if not ent:IsPlayer() then
+				ent:PhysicsDestroy()
+			end
+		end
+
+
+	end
 
 	--if not (lst > 7) then return end
 	simple_antilag_should_collide = lst
@@ -155,4 +183,3 @@ hook.Add( "ShouldCollide", "esrv_simpleantilag", function( ent1, ent2 )
 	end
 
 end )
-game.SetTimeScale( 1 )
